@@ -1,11 +1,15 @@
 const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 const authorize = require("../middlewares/auth")
-const jwt = require("jsonwebtoken")
 const router = require("express").Router()
 
 router.get('/',authorize,async (req,res)=>{
-    const posts = await prisma.post.findMany({})
+    const posts = await prisma.user.findMany({
+        select:{
+            name:true,
+            posts:true
+        }
+    })
     return res.status(200).json(posts)
 })
 
@@ -24,14 +28,13 @@ router.get('/:name',authorize,async (req,res)=>{
 })
 
 router.post('/create',authorize,async(req,res)=>{
-    const id = jwt.decode( req.header('Authorization'))
-    console.log(id)
     const post =await prisma.post.create({
         data:{
+            title:req.body.title,
             post:req.body.post,
             user:{
                 connect:{
-                    id:parseInt(id)
+                    id:parseInt(res.user)
                 }
             }
         }

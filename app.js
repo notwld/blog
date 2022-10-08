@@ -1,79 +1,31 @@
-const { PrismaClient } = require('@prisma/client')
+const express = require("express");
+const http = require('http')
+const pug = require('pug')
 
-const prisma = new PrismaClient()
+const app = express();
 
-const inserUser = async () => {
-    const user = await prisma.user.create({
-        data: {
-            name: "waleed",
-            email: "notwld@gmail.com",
-        }
-    })
-    return user
-}
-const insertPost = async () => {
-    const post = await prisma.post.create({
-        data: {
-           post:"niggadeen",
-           userId:1
-        }
-    })
-    return post
-}
-// insertPost()
-// console.log(inserUser()
-//     .then((res)=>
-//             {
-//                 return res
-//             }
-//         ).catch((err)=>{
-//            return  err
-//         })
-// )
+const indexRoutes = require('./routes/indexRoutes')
+const blogs = require('./routes/blogs')
+const authentication = require('./routes/authentication')
 
-// const getUser = async () => {
-//     const user = await prisma.user.findFirst({
-//         where: {
-//             id: 1
-//         }
-//     })
-//     console.log(user)
-// }
-const getPost = async () => {
-    const post = await prisma.user.findFirst({
-        where: {
-            id: 1
-        },
-        include:{
-            // posts:true
-            _count:{
-                select:{
-                    posts:{
-                        where:{
-                            id:1
-                        }
-                    }
-                }
-            }
-        }
-    })
-    console.log(post)
-}
+//middlewares
+app.use(express.json())
+app.use(express.urlencoded({extended:true}));      
 
-// getUser()
-getPost()
+//routes
+app.use('/',indexRoutes)
+app.use('/api/blog',blogs)
+app.use('/api/user',authentication)
 
-const getAllusers = async ()=>{
-    const users = await prisma.user.findMany({
-        where:{
-            name:"waleed"
-        },
-        include:{
-            _count:true
-        }
+//error handler
+app.all('*', (req, res, next) => {
+    res.status(404).send('Not Found');
+});
+app.use((err,req,res,next)=>{
+    res.status(500).send(err)
+})
 
-    })
-    console.log(users)
-}
-
-// getAllusers()
+//server (http for now)
+http.createServer(app).listen(3000,()=>{
+    console.log("Server running on http://localhost:3000")
+})

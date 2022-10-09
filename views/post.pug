@@ -1,0 +1,8 @@
+extends _app.pug
+
+block content 
+    .postContainer
+        h1 #{post.title}
+        h4 #{post.slug}
+        span by #{post.user.name}
+        p #{post.post}

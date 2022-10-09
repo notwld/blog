@@ -1,15 +1,14 @@
 const jwt = require('jsonwebtoken')
 
 const authorize = (req, res, next) => {
-    const token = req.header('Authorization');
-    if (!token) return res.status(401).send("Access Denied!");
-
+    const token = req.session.token
+    if (!token) return res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
     try {
-        const verify = jwt.verify(token, process.env.SECRET_TOKEN);
-        res.user = verify;
+        const verified = jwt.verify(token, process.env.SECRET_TOKEN)
+        req.user = verified
         next();
-    } catch (error) {
-        return res.status(400).send("Invalid Token!");
+    } catch (err) {
+        res.status(400).send("Invalid Token")
     }
 }
 

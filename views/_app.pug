@@ -1,0 +1,22 @@
+html
+  head
+    title Blogs - #{title}
+    style 
+        include ../public/css/style.css
+  body
+    nav
+      ul
+        li
+          a(href="/") Home
+        li 
+          if user
+            a(href="/api/user/profile") Profile
+            a(href="/api/blog/create") Create
+            a(href="/api/user/logout") Logout
+          else
+            a(href="/api/user/login") Login
+        li
+          if !user
+              a(href="/api/user/register") Register
+    block content
+    

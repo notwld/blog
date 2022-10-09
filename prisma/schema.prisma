@@ -7,7 +7,7 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
+  provider = "sqlserver"
   url      = env("DATABASE_URL")
 }
 
@@ -21,7 +21,8 @@ model User {
 
 model Post {
   id     Int    @id @default(autoincrement())
-  title   String @db.VarChar(64)
+  title   String @db.VarChar(56)
+  slug  String @db.VarChar(56)
   post   String @db.VarChar(225)
   userId Int
   user   User   @relation(fields: [userId], references: [id])

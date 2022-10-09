@@ -1,0 +1,16 @@
+extends _app.pug
+
+block content
+    .register
+        h1 Register
+        form(action="/api/user/register" method="POST")
+            .form-group
+                label(for="name") Name
+                input#name.form-control(type="test" name="name" placeholder="Enter name")
+            .form-group
+                label(for="email") Email
+                input#email.form-control(type="email" name="email" placeholder="Enter email")
+            .form-group
+                label(for="password") Password
+                input#password.form-control(type="password" name="password" placeholder="Password")
+            button.btn.btn-primary(type="submit") Register

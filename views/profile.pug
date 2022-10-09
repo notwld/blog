@@ -1,0 +1,15 @@
+extends _app.pug
+
+block content
+    .profile
+        h1 Profile
+            span #{user.name}
+        h3 Email
+            span #{user.email}
+        .posts 
+            h3 Posts
+            //- each post in posts
+            //-     .post
+            //-         h4 #{post.title}
+            //-         p #{post.body}
+            //-         a(href="/posts/#{post.id}") Read more

@@ -1,6 +1,7 @@
 const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
 const authorize = require("../middlewares/auth")
+
+const prisma = new PrismaClient()
 const router = require("express").Router()
 
 router.get('/', authorize, async (req, res) => {
@@ -15,7 +16,7 @@ router.get('/', authorize, async (req, res) => {
             }
         })
         // console.log(blogs[4].posts)
-        res.render('blogs', { blogs: blogs, user: req.session.userName })
+        res.render('blogs', { blogs: blogs, user: req.session.userName,id:req.session.user })
     } else {
         res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
     }
@@ -41,7 +42,51 @@ router.get('/', authorize, async (req, res) => {
 
 router.get('/create', authorize, async (req, res) => {
     if (req.session.user) {
-        res.render('create')
+        res.render('create', { user: req.session.userName })
+    } else {
+        res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
+    }
+})
+router.get('/edit/:id', authorize, async (req, res) => {
+    if (req.session.user) {
+        const post = await prisma.post.findFirst({
+            where: {
+                id: parseInt(req.params.id)
+            }
+        })
+        if (!post) return res.status(404).send("Post Not Found!")
+        res.render('edit', { user: req.session.userName, post: post })
+    } else {
+        res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
+    }
+})
+router.post('/edit/:id', authorize, async (req, res) => {
+    if (req.session.user) {
+        const post = await prisma.post.update({
+            where: {
+                id: parseInt(req.params.id)
+            },
+            data: {
+                title: req.body.title,
+                slug: req.body.slug,
+                post: req.body.post,
+            }
+        })
+        if (!post) return res.status(404).send("Post Not Found!")
+        res.redirect(`http://${req.hostname}:${process.env.PORT}/api/blog/`)
+    } else {
+        res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
+    }
+})
+router.post('/delete/:id', authorize, async (req, res) => {
+    if (req.session.user) {
+        const post = await prisma.post.delete({
+            where: {
+                id: parseInt(req.params.id)
+            },
+        })
+        if (!post) return res.status(404).send("Post Not Found!")
+        res.redirect(`http://${req.hostname}:${process.env.PORT}/api/blog/`)
     } else {
         res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
     }
@@ -53,17 +98,16 @@ router.post('/create', authorize, async (req, res) => {
         const post = await prisma.post.create({
             data: {
                 title: req.body.title,
-                slug:req.body.slug,
+                slug: req.body.slug,
                 post: req.body.post,
-                user:{
-                    connect:{
+                user: {
+                    connect: {
                         id: req.session.user
                     }
                 }
             }
         })
 
-        // return res.status(200).json({ message: "Post Created", post: post })
         res.redirect(`http://${req.hostname}:${process.env.PORT}/api/blog/`)
     }
     else {
@@ -89,7 +133,6 @@ router.get('/:id', authorize, async (req, res) => {
             }
         })
         if (!post) return res.status(404).send('Post not found')
-        // console.log(post)
         return res.render('post', { post: post, user: req.session.userName })
     } else {
         res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
@@ -97,20 +140,20 @@ router.get('/:id', authorize, async (req, res) => {
 })
 
 
-router.delete('/:id', authorize, async (req, res) => {
-    if (req.session.user) {
-        const post = await prisma.post.delete({
-            where: {
-                id: parseInt(req.params.id)
-            }
-        })
-        if(!post) return res.status(404).send('Post not found')
-        return res.status(200).redirect(`http://${req.hostname}:${process.env.PORT}/api/blog/`)
-    }
-    else {
-        res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
-    }
-})
+// router.delete('/:id', authorize, async (req, res) => {
+//     if (req.session.user) {
+//         const post = await prisma.post.delete({
+//             where: {
+//                 id: parseInt(req.params.id)
+//             }
+//         })
+//         if(!post) return res.status(404).send('Post not found')
+//         return res.status(200).redirect(`http://${req.hostname}:${process.env.PORT}/api/blog/`)
+//     }
+//     else {
+//         res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
+//     }
+// })
 
 
 module.exports = router

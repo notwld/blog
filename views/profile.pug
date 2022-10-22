@@ -2,14 +2,20 @@ extends _app.pug
 
 block content
     .profile
-        h1 Profile
-            span #{user.name}
-        h3 Email
-            span #{user.email}
-        .posts 
-            h3 Posts
-            //- each post in posts
-            //-     .post
-            //-         h4 #{post.title}
-            //-         p #{post.body}
-            //-         a(href="/posts/#{post.id}") Read more
+        h1 #{posts.name}
+        h3 #{posts.email}
+        .blogContainer
+            each post in posts.posts
+                .blog
+                    .post_content
+                        h3 #{post.title}
+                        .post_header
+                            span By #{posts.name} &nbsp;
+                            if user == posts.name
+                                .btnContainer 
+                                    form(method="POST" action=`/api/blog/delete/${post.id}`)
+                                        #delBtn
+                                            button(type="submit") Delete | 
+                                    a(href=`/api/blog/edit/${post.id}`) Edit
+                        p  #{post.slug}
+                        a(href=`/api/blog/${post.id}`) Read more

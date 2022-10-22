@@ -1,0 +1,16 @@
+extends _app.pug
+
+block content
+    .post
+        h1 Edit Post
+        form(action=`/api/blog/edit/${post.id}` method="POST")
+            .form-group
+                label(for="title") Title
+                input#title.form-control(type="text" name="title" placeholder="Enter Title" value=`${post.title}`)
+            .form-group
+                label(for="slug") Slug
+                input#post.form-control(type="text" name="slug" placeholder="Enter Slug" value=`${post.slug}`)
+            .form-group
+                label(for="post") Post
+                input#post.form-control(type="text" name="post" placeholder="Enter Post" value=`${post.post}`)
+            button.btn.btn-primary(type="submit") Update

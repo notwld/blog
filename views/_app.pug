@@ -10,7 +10,7 @@ html
           a(href="/") Home
         li 
           if user
-            a(href="/api/user/profile") Profile
+            a(href=`/api/user/profile/${id}`) Profile
             a(href="/api/blog/create") Create
             a(href="/api/user/logout") Logout
           else

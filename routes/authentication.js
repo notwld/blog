@@ -1,9 +1,9 @@
 const { PrismaClient } = require('@prisma/client')
-const prisma = new PrismaClient()
 
-const router = require("express").Router()
 const { registerValidation, loginValidation } = require('../middlewares/validate')
 
+const prisma = new PrismaClient()
+const router = require("express").Router()
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken')
 
@@ -92,6 +92,25 @@ router.get('/logout', async (req, res, next) => {
     if (req.session.user) {
         req.session.destroy()
         res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
+    }
+    else {
+        res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)
+    }
+})
+router.get('/profile/:id', async (req, res, next) => {
+    if (req.session.user) {
+        const posts = await prisma.user.findFirst({
+            where:{
+                id:parseInt(req.session.user)
+            },
+            select:{
+                name:true,
+                email:true,
+                posts:true
+            }
+        })
+        if (!posts) return res.status(404).send("User Not Found!")
+        res.render('profile',{user:req.session.user,posts:posts,id:req.params.id})
     }
     else {
         res.redirect(`http://${req.hostname}:${process.env.PORT}/api/user/login`)

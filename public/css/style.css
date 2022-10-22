@@ -1,80 +1,110 @@
-*{
-    margin: 0%;
-    padding: 0%;
-    font-family:sans-serif;
+* {
+  margin: 0%;
+  padding: 0%;
+  font-family: sans-serif;
 }
-body{
-    padding: 0px 220px;
+body {
+  padding: 0px 220px;
 }
-nav{
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    height: 100px;
-    margin-bottom: 25px;
+nav {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  height: 100px;
+  margin-bottom: 25px;
 }
-nav ul{
-    display: flex;
-    flex-direction: row;
-    list-style: none;
+nav ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
 }
-nav ul li a{
-    color: black;
-    margin: 0px 12px;
-    font-size: 24px;
-    text-decoration: none;
+nav ul li a {
+  color: black;
+  margin: 0px 12px;
+  font-size: 24px;
+  text-decoration: none;
 }
-.login,.register,.post{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+.login,
+.register,
+.post {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
 }
-.form-group{
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    margin: 10px 0px;
+.form-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin: 10px 0px;
 }
-.form-group input{
-    padding: 10px 25px;
+.form-group input {
+  padding: 10px 25px;
 }
 
-.btn{
-    padding: 5px 4px;
-    border-radius: 10px;
-    cursor: pointer;
-    outline: none;
+.btn {
+  padding: 5px 4px;
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
 }
 /* .btn-primary{
     background-color: blue;
     color: white;
 } */
-
+#blog_heading {
+  margin-top: 25px;
+}
 .blogContainer {
-    margin-top: 25px;
+  display: flex;
+  width: 100%;
+  margin-bottom: 25px;
+  margin-left: 35px;
 }
-.post_content{
-    margin-top: 20px;
-    margin-left: 35px;
+.post_content {
+  padding-left: 35px;
+  margin-top: 20px;
 }
-.post_content span,a{
-    font-size: 12px;
-    font-style: italic;
+.post_content span,
+a {
+  font-size: 12px;
+  font-style: italic;
 }
-.post_content p{
-    margin-top: 7px;
+.post_header{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-self: center;
+  width: 100%;
 }
-.postContainer h4{
-    margin-top: 15px;
+.btnContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
 }
-.postContainer p{
-    margin:15px 10px;
+#delBtn button{
+  cursor: pointer;
+  background: none;
+  outline: none;
+  border: none;
+  font-size: 12px;
+  font-style: italic;
+  text-decoration: underline;
+  color: blue;
 }
-.postContainer span{
-    font-size: 12px;
-    font-style: italic;
+.post_content p {
+  margin-top: 7px;
+}
+.postContainer h4 {
+  margin-top: 15px;
+}
+.postContainer p {
+  margin: 15px 10px;
+}
+.postContainer span {
+  font-size: 12px;
+  font-style: italic;
 }
